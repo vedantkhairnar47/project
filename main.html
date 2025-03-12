@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram-Like Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>InstaBook</h1>
+    </div>
+
+    <!-- Post Section -->
+    <div class="post-section" id="post-section">
+        <!-- Posts will be dynamically added here -->
+    </div>
+
+    <!-- Chat Section -->
+    <div id="chat-section" class="chat-section">
+        <div class="chat-header">
+            <span>Chat with User1</span>
+            <button id="close-chat">Close Chat</button>
+        </div>
+        <div class="chat-box">
+            <div class="chat-message">Hey, how are you?</div>
+            <div class="chat-message">I'm good, thanks! What about you?</div>
+        </div>
+        <input type="text" id="chat-input" placeholder="Type a message...">
+        <button id="send-message">Send</button>
+    </div>
+
+    <!-- Modal for Adding Post -->
+    <div id="post-modal" class="modal">
+        <div class="modal-content">
+            <h2>Add New Post</h2>
+            <form id="post-form">
+                <label for="post-image">Image URL:</label>
+                <input type="text" id="post-image" placeholder="Enter image URL" required>
+                <label for="post-description">Description:</label>
+                <textarea id="post-description" placeholder="Enter description" required></textarea>
+                <button type="submit">Submit Post</button>
+                <button type="button" id="close-modal">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bottom Buttons Section -->
+    <div class="bottom-buttons">
+        <button id="open-chat">Open Chat</button>
+        <button id="add-post-btn">Add Post</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
