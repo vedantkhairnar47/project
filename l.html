@@ -6,7 +6,7 @@
     <title>Login Page</title>
     <style>
         body {
-            background-color: black;
+            background-color: #121212;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
@@ -17,10 +17,10 @@
         }
 
         .login-container {
-            background-color: aqua;
+            background-color: #ffffff;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 350px;
             text-align: center;
@@ -45,6 +45,22 @@
             font-size: 16px;
         }
 
+        .input-group .password-container {
+            position: relative;
+        }
+
+        .input-group .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 55%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 14px;
+            color: #007bff;
+            border: none;
+            background: none;
+        }
+
         .login-btn {
             background: #28a745;
             color: white;
@@ -66,7 +82,7 @@
         }
 
         .register-link a {
-            color: #0056b3;
+            color: #007bff;
             text-decoration: none;
             font-weight: bold;
         }
@@ -75,11 +91,16 @@
             text-decoration: underline;
         }
 
-        /* Responsive Design */
+        .message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
         @media (max-width: 480px) {
             .login-container {
                 max-width: 95%;
-                padding: 35px;
+                padding: 25px;
             }
 
             .login-btn {
@@ -105,47 +126,56 @@
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword()">👁</button>
+                </div>
             </div>
             <button type="submit" class="login-btn">Login</button>
+            <p id="login-message" class="message"></p>
         </form>
         <div class="register-link">
-            <p>New user? <a href="signup.html">Sign up</a></p>
+            <p>New user? <a href="s.html">Sign up</a></p>
         </div>
     </div>
 
     <script>
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            passwordField.type = passwordField.type === "password" ? "text" : "password";
+        }
+
         document.getElementById("login-form").addEventListener("submit", async function (event) {
-            event.preventDefault(); // Prevent form submission
+            event.preventDefault();
 
-            const username = document.getElementById("username").value;
+            const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value;
+            const loginMessage = document.getElementById("login-message");
 
-            const apiUrl = " https://ticketing-system-backend-70zx.onrender.com/api/v1/auth/login"; // Replace with your actual API endpoint
+            loginMessage.textContent = "Logging in..."; // Show loading text
+            loginMessage.style.color = "blue";
+
+            const apiUrl = "https://ticketing-system-backend-70zx.onrender.com/api/v1/auth/login"; 
 
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ username, password })
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Store token in local storage
                     localStorage.setItem("authToken", data.token);
-
-                    // Redirect to main page
                     window.location.href = "main.html";
                 } else {
-                    alert(data.message || "Invalid username or password");
+                    loginMessage.textContent = data.message || "Invalid username or password";
+                    loginMessage.style.color = "red";
                 }
             } catch (error) {
-                console.error("Login error:", error);
-                alert("Error connecting to server. Please try again later.");
+                loginMessage.textContent = "Error connecting to server. Please try again later.";
+                loginMessage.style.color = "red";
             }
         });
     </script>
