@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            text-align: center;
+            position: relative;
+        }
+        .preview {
+            margin-top: 10px;
+            max-width: 100%;
+            display: none;
+        }
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            color: #3897f0;
+            cursor: pointer;
+        }
+        .form-content {
+            margin-top: 30px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <button class="back-button" onclick="window.location.href='main.html'">← Back</button>
+        <div class="form-content">
+            <h2>Create a Post</h2>
+            <form id="postForm" enctype="multipart/form-data">
+                <input type="file" name="image" id="imageInput" accept="image/jpeg, image/jpg, image/png">
+                <br><br>
+                <img id="imagePreview" class="preview" alt="Image Preview">
+                <br>
+                <textarea name="text" id="description" placeholder="Write a caption..." rows="4" required></textarea>
+                <br><br>
+                <button type="submit">Post</button>
+            </form>
+            <p id="responseMessage"></p>
+            <p id="authError" class="error-message" style="display: none;"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const API_BASE = "https://memento-v9jd.onrender.com/api/v1/post";
+            const TOKEN = localStorage.getItem('authToken'); // Get token from localStorage
+            
+            // Check if token exists
+            if (!TOKEN) {
+                document.getElementById('authError').textContent = "Authentication required. Please login first.";
+                document.getElementById('authError').style.display = 'block';
+                document.getElementById('postForm').style.display = 'none';
+                setTimeout(() => {
+                    window.location.href = 'login.html'; // Redirect to login if no token
+                }, 2000);
+                return;
+            }
+
+            // Image Preview Functionality
+            document.getElementById('imageInput').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.getElementById('imagePreview');
+                        img.src = e.target.result;
+                        img.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Handle Form Submission
+            document.getElementById('postForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const formData = new FormData();
+                const description = document.getElementById('description').value;
+                const fileInput = document.getElementById('imageInput').files[0];
+                const responseMessage = document.getElementById('responseMessage');
+
+                // Validate Text Input
+                if (!description.trim()) {
+                    responseMessage.innerText = "⚠ Text is required!";
+                    responseMessage.style.color = "red";
+                    return;
+                }
+
+                // Append Form Data
+                formData.append("text", description);
+                if (fileInput) {
+                    formData.append("image", fileInput);
+                }
+
+                try {
+                    const response = await fetch(`${API_BASE}/create`, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${TOKEN}`
+                        },
+                        body: formData
+                    });
+
+                    // Handle API Response
+                    const data = await response.json();
+                    console.log("Full API Response:", data);
+
+                    if (response.ok) {
+                        responseMessage.innerText = "✅ Post uploaded successfully!";
+                        responseMessage.style.color = "green";
+                        // Redirect after 2 seconds
+                        setTimeout(() => {
+                            window.location.href = 'main.html';
+                        }, 2000);
+                    } else {
+                        if (response.status === 401) {
+                            // Token expired or invalid
+                            localStorage.removeItem('authToken');
+                            responseMessage.innerText = "Session expired. Please login again.";
+                            setTimeout(() => {
+                                window.location.href = 'login.html';
+                            }, 2000);
+                        } else {
+                            responseMessage.innerText = `⚠ Error: ${data.message || 'Failed to create post'}`;
+                        }
+                        responseMessage.style.color = "red";
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    responseMessage.innerText = "⚠ Failed to upload post. Check your connection.";
+                    responseMessage.style.color = "red";
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

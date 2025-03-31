@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends | Memento</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .header {
+            background-color: #3f51b5;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        .section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            background-color: #f9f9f9;
+        }
+        .friend-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .friend-item:last-child {
+            border-bottom: none;
+        }
+        .friend-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .friend-info {
+            flex-grow: 1;
+        }
+        .friend-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .friend-username {
+            color: #666;
+            font-size: 14px;
+        }
+        .friend-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background-color: #3f51b5;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #f44336;
+            color: white;
+        }
+        .btn-success {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        .no-friends {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+        }
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+        .modal-header {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-body {
+            padding: 15px;
+        }
+        .modal-footer {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+        }
+        .tab.active {
+            border-bottom: 2px solid #3f51b5;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-btn" onclick="window.location.href='main.html'">← Back</button>
+        <h2>Friends</h2>
+        <div style="width: 48px;"></div> <!-- Spacer for alignment -->
+    </div>
+
+    <div class="container">
+        <!-- Friends List Section -->
+        <div class="section">
+            <div class="section-header">Your Friends</div>
+            <div id="friends-list">
+                <div class="no-friends">Loading friends...</div>
+            </div>
+        </div>
+
+        <!-- Friend Requests Section -->
+        <div class="section">
+            <div class="section-header">Friend Requests</div>
+            <div class="tab-container">
+                <div class="tab active" onclick="switchTab('received')">Received</div>
+                <div class="tab" onclick="switchTab('sent')">Sent</div>
+            </div>
+            <div id="received-requests" class="tab-content active">
+                <div class="no-friends">Loading received requests...</div>
+            </div>
+            <div id="sent-requests" class="tab-content">
+                <div class="no-friends">Loading sent requests...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friend Profile Modal -->
+    <div class="profile-modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="modalTitle">Friend Profile</span>
+                <button class="close-modal" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img id="modalAvatar" src="https://via.placeholder.com/100" class="friend-avatar" style="width: 100px; height: 100px;">
+                    <h3 id="modalName">Loading...</h3>
+                    <p id="modalUsername" style="color: #666;">@username</p>
+                </div>
+                <div id="modalActions" class="friend-actions" style="justify-content: center;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "https://memento-v9jd.onrender.com/api/v1/friends";
+        let currentUser = null;
+        let friends = [];
+        let receivedRequests = [];
+        let sentRequests = [];
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Fetch current user profile (you may need to adjust this to your actual user endpoint)
+                const userResponse = await fetch(`${API_BASE.replace('/friends', '')}/profile/my-profile-details`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!userResponse.ok) {
+                    throw new Error('Failed to fetch profile');
+                }
+                
+                const userData = await userResponse.json();
+                currentUser = userData.user;
+
+                // Load all friend data
+                await loadFriends(token);
+                await loadFriendRequests(token);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to load data: ' + error.message);
+            }
+        });
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}-requests`).classList.add('active');
+        }
+
+        async function loadFriends(token) {
+            try {
+                // Get friends from your following list (adjust according to your API)
+                const response = await fetch(`${API_BASE.replace('/friends', '')}/profile/my-profile-details`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch friends');
+                
+                const data = await response.json();
+                friends = data.user.following || [];
+
+                const friendsList = document.getElementById('friends-list');
+                if (friends.length === 0) {
+                    friendsList.innerHTML = '<div class="no-friends">You have no friends yet</div>';
+                    return;
+                }
+
+                friendsList.innerHTML = '';
+                // Note: This assumes friends array contains user IDs. You may need to fetch user details for each.
+                friends.forEach(friendId => {
+                    // In a real app, you would fetch user details for each friendId
+                    const friendItem = document.createElement('div');
+                    friendItem.className = 'friend-item';
+                    friendItem.innerHTML = `
+                        <img src="https://via.placeholder.com/50" class="friend-avatar">
+                        <div class="friend-info">
+                            <div class="friend-name">User ${friendId}</div>
+                            <div class="friend-username">@user_${friendId}</div>
+                        </div>
+                    `;
+                    friendItem.addEventListener('click', () => openFriendModal(friendId, true));
+                    friendsList.appendChild(friendItem);
+                });
+            } catch (error) {
+                console.error('Error loading friends:', error);
+                document.getElementById('friends-list').innerHTML = 
+                    '<div class="no-friends">Error loading friends</div>';
+            }
+        }
+
+        async function loadFriendRequests(token) {
+            try {
+                // Get friend requests
+                const response = await fetch(`${API_BASE}/requests`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch requests');
+                
+                const data = await response.json();
+                receivedRequests = data.received || [];
+                sentRequests = data.sent || [];
+
+                renderRequests('received', receivedRequests);
+                renderRequests('sent', sentRequests);
+            } catch (error) {
+                console.error('Error loading requests:', error);
+                document.getElementById('received-requests').innerHTML = 
+                    '<div class="no-friends">Error loading requests</div>';
+                document.getElementById('sent-requests').innerHTML = 
+                    '<div class="no-friends">Error loading requests</div>';
+            }
+        }
+
+        function renderRequests(type, requests) {
+            const container = document.getElementById(`${type}-requests`);
+            
+            if (requests.length === 0) {
+                container.innerHTML = `<div class="no-friends">No ${type} requests</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            requests.forEach(request => {
+                const requestItem = document.createElement('div');
+                requestItem.className = 'friend-item';
+                
+                if (type === 'received') {
+                    requestItem.innerHTML = `
+                        <img src="${request.sender?.profilePicture || 'https://via.placeholder.com/50'}" class="friend-avatar">
+                        <div class="friend-info">
+                            <div class="friend-name">${request.sender?.fullName || 'User'}</div>
+                            <div class="friend-username">@${request.sender?.username || 'user'}</div>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="btn btn-success" onclick="acceptRequest('${request._id}', event)">Accept</button>
+                            <button class="btn btn-danger" onclick="declineRequest('${request._id}', event)">Decline</button>
+                        </div>
+                    `;
+                } else {
+                    requestItem.innerHTML = `
+                        <img src="${request.receiver?.profilePicture || 'https://via.placeholder.com/50'}" class="friend-avatar">
+                        <div class="friend-info">
+                            <div class="friend-name">${request.receiver?.fullName || 'User'}</div>
+                            <div class="friend-username">@${request.receiver?.username || 'user'}</div>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="btn btn-danger" onclick="cancelRequest('${request._id}', event)">Cancel</button>
+                        </div>
+                    `;
+                }
+                
+                container.appendChild(requestItem);
+            });
+        }
+
+        async function acceptRequest(requestId, event) {
+            event.stopPropagation();
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch(`${API_BASE}/accept/${requestId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Friend request accepted');
+                    await loadFriends(token);
+                    await loadFriendRequests(token);
+                } else {
+                    throw new Error('Failed to accept request');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error accepting request: ' + error.message);
+            }
+        }
+
+        async function declineRequest(requestId, event) {
+            event.stopPropagation();
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch(`${API_BASE}/decline/${requestId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Friend request declined');
+                    await loadFriendRequests(token);
+                } else {
+                    throw new Error('Failed to decline request');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error declining request: ' + error.message);
+            }
+        }
+
+        async function cancelRequest(requestId, event) {
+            event.stopPropagation();
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch(`${API_BASE}/decline/${requestId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Friend request canceled');
+                    await loadFriendRequests(token);
+                } else {
+                    throw new Error('Failed to cancel request');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error canceling request: ' + error.message);
+            }
+        }
+
+        async function sendFriendRequest(receiverId) {
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch(`${API_BASE}/send/${receiverId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Friend request sent');
+                    closeModal();
+                    await loadFriendRequests(token);
+                } else {
+                    throw new Error('Failed to send request');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error sending request: ' + error.message);
+            }
+        }
+
+        async function unfriend(userId) {
+            if (!confirm('Are you sure you want to unfriend this user?')) return;
+            
+            try {
+                const token = localStorage.getItem('authToken');
+                // Note: You'll need to implement an unfriend endpoint in your API
+                const response = await fetch(`${API_BASE.replace('/friends', '')}/profile/unfriend/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Friend removed');
+                    closeModal();
+                    await loadFriends(token);
+                } else {
+                    throw new Error('Failed to remove friend');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error removing friend: ' + error.message);
+            }
+        }
+
+        function openFriendModal(userId, isFriend) {
+            // In a real app, you would fetch user details here
+            const modal = document.getElementById('profileModal');
+            document.getElementById('modalTitle').textContent = isFriend ? 'Friend Profile' : 'User Profile';
+            document.getElementById('modalName').textContent = `User ${userId}`;
+            document.getElementById('modalUsername').textContent = `@user_${userId}`;
+            document.getElementById('modalAvatar').src = 'https://via.placeholder.com/100';
+
+            const modalActions = document.getElementById('modalActions');
+            modalActions.innerHTML = '';
+
+            if (isFriend) {
+                // Add chat and unfriend options for friends
+                const chatBtn = document.createElement('button');
+                chatBtn.className = 'btn btn-primary';
+                chatBtn.textContent = 'Chat';
+                chatBtn.onclick = () => {
+                    window.location.href = `chat.html?userId=${userId}`;
+                };
+                modalActions.appendChild(chatBtn);
+
+                const unfriendBtn = document.createElement('button');
+                unfriendBtn.className = 'btn btn-danger';
+                unfriendBtn.textContent = 'Unfriend';
+                unfriendBtn.onclick = () => unfriend(userId);
+                modalActions.appendChild(unfriendBtn);
+            } else {
+                // Add add friend option for non-friends
+                const addFriendBtn = document.createElement('button');
+                addFriendBtn.className = 'btn btn-primary';
+                addFriendBtn.textContent = 'Add Friend';
+                addFriendBtn.onclick = () => sendFriendRequest(userId);
+                modalActions.appendChild(addFriendBtn);
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('profileModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('profileModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
