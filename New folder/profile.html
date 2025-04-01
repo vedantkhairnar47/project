@@ -12,7 +12,7 @@
             --text-color: #262626;
             --text-light: #8e8e8e;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -20,25 +20,28 @@
             background-color: var(--secondary-color);
             color: var(--text-color);
         }
-        
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
         .header {
-            background-color: white;
-            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 15px 20px;
+            background: white;
             border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 100;
         }
-        
-        .header h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            color: var(--text-color);
-        }
-        
+
         .header button {
             background-color: var(--primary-color);
             color: white;
@@ -48,243 +51,145 @@
             cursor: pointer;
             font-weight: 600;
         }
-        
+
         .profile-section {
-            max-width: 600px;
-            margin: 20px auto;
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .profile-header {
-            padding: 20px;
             text-align: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .profile-header h2 {
-            margin: 0;
-            color: var(--text-color);
-        }
-        
-        .profile-content {
             padding: 20px;
         }
-        
-        .profile-photo-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .profile-photo-container img {
-            width: 150px;
-            height: 150px;
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid white;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
-        .profile-photo-upload {
-            display: none;
+
+        .user-info h2 {
+            margin: 10px 0;
         }
-        
-        #change-photo-btn {
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item span {
+            font-weight: bold;
             display: block;
-            margin: 10px auto 0;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
         }
-        
-        .profile-info {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .profile-info h3 {
-            margin: 10px 0 5px;
-            color: var(--text-color);
-        }
-        
-        .profile-info p {
-            margin: 5px 0;
-            color: var(--text-light);
-        }
-        
-        #profile-bio {
-            margin: 15px auto;
-            padding: 10px;
+
+        .bio {
             background-color: var(--secondary-color);
+            padding: 10px;
             border-radius: 4px;
-            max-width: 80%;
-        }
-        
-        #bio-edit {
-            display: none;
+            margin: 15px auto;
             width: 80%;
-            height: 100px;
-            margin: 15px auto;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            resize: none;
-            font-family: inherit;
-        }
-        
-        .bio-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .bio-buttons button {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
             cursor: pointer;
-            font-weight: 600;
         }
-        
-        #edit-bio-btn {
-            background-color: var(--primary-color);
-            color: white;
+
+        .posts-section {
+            margin-top: 30px;
         }
-        
-        #save-bio-btn {
-            background-color: #4CAF50;
-            color: white;
+
+        .post {
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
         }
-        
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
+
+        .post img {
+            width: 100%;
+            border-radius: 5px;
         }
-        
-        .view-friends-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-        
-        .friends-list {
-            margin-top: 20px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
-        }
-        
-        .friends-list h3 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: var(--text-color);
-        }
-        
-        .friends-list ul {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            padding: 0;
-        }
-        
-        .friends-list li {
-            background-color: var(--secondary-color);
-            padding: 10px 15px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .remove-friend {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        
-        .no-friends {
+
+        .no-posts {
             text-align: center;
             color: var(--text-light);
             padding: 20px;
         }
+
+        .privacy-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .privacy-section input {
+            margin-top: 10px;
+        }
+
+        .edit-photo-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
+
     <div class="header">
         <h1>My Profile</h1>
-        <button onclick="window.location.href='main.html'">Back to Home</button>
+        <button onclick="window.location.href='main.html'">Home</button>
+        <button onclick="window.location.href='friends.html'">Friends</button> <!-- Friends button -->
+        <button id="logout-btn" style="background-color: #f44336;">Logout</button>
     </div>
 
-    <div class="profile-section">
-        <div class="profile-header">
-            <h2>User Profile</h2>
-        </div>
-
-        <div class="profile-content">
-            <div class="profile-photo-container">
-                <img id="profile-photo" src="" alt="Profile Photo">
-                <input type="file" id="profile-photo-upload" class="profile-photo-upload" accept="image/*">
-                <button id="change-photo-btn">Change Profile Photo</button>
-            </div>
-
-            <div class="profile-info">
-                <h3 id="profile-username">Loading...</h3>
-                <p id="profile-fullname">Loading...</p>
-                <p id="profile-email">Loading...</p>
-                <p id="profile-bio">This is my bio. Click to edit.</p>
-                <textarea id="bio-edit" placeholder="Tell something about yourself..."></textarea>
-                <div class="bio-buttons">
-                    <button id="edit-bio-btn">Edit Bio</button>
-                    <button id="save-bio-btn">Save Bio</button>
+    <div class="container">
+        <div class="profile-section">
+            <img id="profile-photo" class="profile-photo" src="https://via.placeholder.com/120" alt="Profile Photo">
+            <button class="edit-photo-btn" onclick="document.getElementById('file-input').click()">Edit Photo</button>
+            <input type="file" id="file-input" style="display: none;" accept="image/*">
+            <h2 id="profile-username">Loading...</h2>
+            <p id="profile-email">Loading...</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span id="followers-count">0</span>
+                    Followers
+                </div>
+                <div class="stat-item">
+                    <span id="following-count">0</span>
+                    Following
                 </div>
             </div>
 
-            <div class="action-buttons">
-                <button class="view-friends-btn" onclick="window.location.href='friends.html'">View Friends</button>
-            </div>
+            <p id="profile-bio" class="bio" onclick="editBio()">This is my bio. Click to edit.</p>
+        </div>
 
-            <div class="friends-list">
-                <h3>Friends</h3>
-                <ul id="friends-list">
-                    <div class="no-friends">Loading friends...</div>
-                </ul>
+        <div class="privacy-section">
+            <label for="privacy-toggle">Private Account</label>
+            <input type="checkbox" id="privacy-toggle">
+            <button class="edit-photo-btn" onclick="updatePrivacy()">Save Privacy Setting</button> <!-- Privacy button styled like other buttons -->
+        </div>
+
+        <div class="posts-section">
+            <h2>My Posts</h2>
+            <div id="posts-container">
+                <p class="no-posts">Loading posts...</p>
             </div>
         </div>
     </div>
 
     <script>
-        // Initialize with bio buttons in correct state
-        document.getElementById('save-bio-btn').style.display = 'none';
-        
         async function fetchProfile() {
             const token = localStorage.getItem("authToken");
-            
             if (!token) {
                 alert("Authentication required. Redirecting to login.");
                 window.location.href = "login.html";
                 return;
             }
-            
+
             try {
                 const response = await fetch('https://memento-v9jd.onrender.com/api/v1/profile/my-profile-details', {
                     method: "GET",
@@ -293,240 +198,117 @@
                         "Content-Type": "application/json"
                     }
                 });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || "Failed to fetch profile");
-                }
-                
+
+                if (!response.ok) throw new Error("Failed to fetch profile");
+
                 const data = await response.json();
                 const user = data.user;
-                
-                // Update profile information
-                document.getElementById("profile-username").textContent = user.username || "Username not available";
-                document.getElementById("profile-fullname").textContent = user.fullName || "Full name not available";
-                document.getElementById("profile-email").textContent = user.email || "Email not available";
-                document.getElementById("profile-bio").textContent = user.bio || "No bio yet. Click to edit.";
-                
-                // Set profile picture
-                const profilePic = document.getElementById("profile-photo");
-                profilePic.src = user.profilePicture || 'https://via.placeholder.com/150';
-                profilePic.alt = `${user.username}'s profile picture`;
-                
-                // Update friends list
-                updateFriendsList(user.following);
-                
+
+                document.getElementById("profile-username").textContent = user.username || "No Username";
+                document.getElementById("profile-email").textContent = user.email || "No Email";
+                document.getElementById("profile-bio").textContent = user.bio || "No bio available.";
+                document.getElementById("followers-count").textContent = user.followers ? user.followers.length : 0;
+                document.getElementById("following-count").textContent = user.following ? user.following.length : 0;
+                document.getElementById("profile-photo").src = user.profilePicture || 'https://via.placeholder.com/120';
+                document.getElementById("privacy-toggle").checked = user.isPrivate;
+
+                fetchPosts();
             } catch (error) {
-                console.error("Error fetching profile:", error);
-                document.getElementById("friends-list").innerHTML = 
-                    '<div class="no-friends">Error loading friends</div>';
                 alert("Error fetching profile: " + error.message);
             }
         }
-        
-        function updateFriendsList(following) {
-            const friendsList = document.getElementById("friends-list");
-            friendsList.innerHTML = "";
-            
-            if (following && following.length > 0) {
-                following.forEach(friendId => {
-                    const li = document.createElement("li");
-                    li.innerHTML = `
-                        User ${friendId.slice(0, 6)}
-                        <button class="remove-friend" data-id="${friendId}" title="Remove friend">×</button>
-                    `;
-                    friendsList.appendChild(li);
-                });
-            } else {
-                friendsList.innerHTML = '<div class="no-friends">No friends yet</div>';
-            }
-            
-            // Add event listeners to remove buttons
-            document.querySelectorAll('.remove-friend').forEach(button => {
-                button.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    const friendId = button.getAttribute('data-id');
-                    if (confirm(`Are you sure you want to remove this friend?`)) {
-                        await removeFriend(friendId);
-                    }
-                });
-            });
-        }
-        
-        async function removeFriend(friendId) {
+
+        async function fetchPosts() {
             const token = localStorage.getItem("authToken");
             try {
-                const response = await fetch(`https://memento-v9jd.onrender.com/api/v1/friends/remove/${friendId}`, {
-                    method: "POST",
+                const response = await fetch('https://memento-v9jd.onrender.com/api/v1/post/my-posts', {
+                    method: "GET",
                     headers: {
-                        "Authorization": `Bearer ${token}`
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
                     }
                 });
-                
-                if (response.ok) {
-                    alert('Friend removed successfully');
-                    fetchProfile(); // Refresh the profile
+
+                if (!response.ok) throw new Error("Failed to fetch posts");
+
+                const data = await response.json();
+                const postsContainer = document.getElementById("posts-container");
+                postsContainer.innerHTML = "";
+
+                if (data.posts.length === 0) {
+                    postsContainer.innerHTML = '<p class="no-posts">No posts yet.</p>';
                 } else {
-                    throw new Error("Failed to remove friend");
+                    data.posts.forEach(post => {
+                        const postElement = document.createElement("div");
+                        postElement.classList.add("post");
+                        postElement.innerHTML = `
+                            <img src="${post.image || 'https://via.placeholder.com/300'}" alt="Post Image">
+                            <p>${post.caption || 'No caption provided'}</p>
+                        `;
+                        postsContainer.appendChild(postElement);
+                    });
                 }
             } catch (error) {
-                console.error("Error removing friend:", error);
-                alert("Error removing friend: " + error.message);
+                alert("Error fetching posts: " + error.message);
             }
         }
-        
-        // Bio editing functionality
-        document.getElementById('save-bio-btn').style.display = 'none';
-    
-        async function fetchProfile() {
+
+        async function editBio() {
+            const bioText = prompt("Edit your bio:");
+            if (bioText === null || bioText === "") return;
+
             const token = localStorage.getItem("authToken");
-            
-            if (!token) {
-                alert("Authentication required. Redirecting to login.");
-                window.location.href = "login.html";
-                return;
-            }
-            
             try {
-                const response = await fetch('https://memento-v9jd.onrender.com/api/v1/profile/my-profile-details', {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || "Failed to fetch profile");
-                }
-                
-                const data = await response.json();
-                const user = data.user;
-                
-                // Update profile information
-                document.getElementById("profile-username").textContent = user.username || "Username not available";
-                document.getElementById("profile-fullname").textContent = user.fullName || "Full name not available";
-                document.getElementById("profile-email").textContent = user.email || "Email not available";
-                document.getElementById("profile-bio").textContent = user.bio || "No bio yet. Click to edit.";
-                
-                // Set profile picture
-                const profilePic = document.getElementById("profile-photo");
-                profilePic.src = user.profilePicture || 'https://via.placeholder.com/150';
-                profilePic.alt = `${user.username}'s profile picture`;
-                
-                // Update friends list
-                updateFriendsList(user.following);
-                
-            } catch (error) {
-                console.error("Error fetching profile:", error);
-                document.getElementById("friends-list").innerHTML = 
-                    '<div class="no-friends">Error loading friends</div>';
-                alert("Error fetching profile: " + error.message);
-            }
-        }
-        
-        // Bio editing functionality - PROPERLY MAPPED API RESPONSE
-        document.getElementById("edit-bio-btn").addEventListener("click", () => {
-            const bioDisplay = document.getElementById("profile-bio");
-            const bioEdit = document.getElementById("bio-edit");
-            
-            bioEdit.value = bioDisplay.textContent;
-            bioDisplay.style.display = "none";
-            bioEdit.style.display = "block";
-            document.getElementById("edit-bio-btn").style.display = "none";
-            document.getElementById("save-bio-btn").style.display = "inline-block";
-        });
-        
-        document.getElementById("save-bio-btn").addEventListener("click", async () => {
-            const newBio = document.getElementById("bio-edit").value.trim();
-            const bioDisplay = document.getElementById("profile-bio");
-            
-            try {
-                const token = localStorage.getItem("authToken");
-                if (!token) throw new Error("No authentication token found");
-                
                 const response = await fetch('https://memento-v9jd.onrender.com/api/v1/profile/update-bio', {
-                    method: "POST",
+                    method: "PUT",
                     headers: {
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ bio: newBio })
+                    body: JSON.stringify({ bio: bioText })
                 });
-                
-                const result = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(result.message || "Failed to update bio");
-                }
-                
-                // PROPERLY MAP THE API RESPONSE HERE
-                if (result && result.user && result.user.bio) {
-                    bioDisplay.textContent = result.user.bio;
-                } else if (result && result.bio) {
-                    bioDisplay.textContent = result.bio;
-                } else {
-                    bioDisplay.textContent = newBio;
-                }
-                
-                bioDisplay.style.display = "block";
-                document.getElementById("bio-edit").style.display = "none";
-                document.getElementById("edit-bio-btn").style.display = "inline-block";
-                document.getElementById("save-bio-btn").style.display = "none";
-                
+
+                if (!response.ok) throw new Error("Failed to update bio");
+
+                const data = await response.json();
                 alert("Bio updated successfully!");
-                
+                document.getElementById("profile-bio").textContent = bioText;
             } catch (error) {
-                console.error("Bio update error:", error);
-                alert("Failed to update bio: " + error.message);
-                
-                // Revert UI on error
-                bioDisplay.style.display = "block";
-                document.getElementById("bio-edit").style.display = "none";
-                document.getElementById("edit-bio-btn").style.display = "inline-block";
-                document.getElementById("save-bio-btn").style.display = "none";
+                alert("Error updating bio: " + error.message);
+            }
+        }
+
+        async function updatePrivacy() {
+            const isPrivate = document.getElementById("privacy-toggle").checked;
+            const token = localStorage.getItem("authToken");
+
+            try {
+                const response = await fetch('https://memento-v9jd.onrender.com/api/v1/profile/update-privacy', {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ isPrivate: isPrivate })
+                });
+
+                if (!response.ok) throw new Error("Failed to update privacy");
+
+                alert("Privacy settings updated successfully!");
+            } catch (error) {
+                alert("Error updating privacy: " + error.message);
+            }
+        }
+
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            if (confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem("authToken");
+                window.location.href = "login.html";
             }
         });
-    
-        
-        // Profile picture upload functionality
-        document.getElementById("change-photo-btn").addEventListener("click", () => {
-            document.getElementById("profile-photo-upload").click();
-        });
-        
-        document.getElementById("profile-photo-upload").addEventListener("change", async (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const formData = new FormData();
-                formData.append("profilePicture", file);
-                
-                try {
-                    const token = localStorage.getItem("authToken");
-                    const response = await fetch('https://memento-v9jd.onrender.com/api/v1/profile/update-profile-picture', {
-                        method: "POST",
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        },
-                        body: formData
-                    });
-                    
-                    if (response.ok) {
-                        const result = await response.json();
-                        document.getElementById("profile-photo").src = result.user.profilePicture;
-                        alert("Profile picture updated successfully");
-                    } else {
-                        throw new Error("Failed to update profile picture");
-                    }
-                } catch (error) {
-                    console.error("Error updating profile picture:", error);
-                    alert("Error updating profile picture: " + error.message);
-                }
-            }
-        });
-        
-        // Initialize the page
+
         document.addEventListener("DOMContentLoaded", fetchProfile);
     </script>
+
 </body>
 </html>
