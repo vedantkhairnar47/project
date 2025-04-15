@@ -4,47 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
-    <style>
+    <style>/* Modern and dark-themed Create Post CSS */
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
             margin: 0;
+            background-color: #0d0d0d;
+            color: #f0f0f0;
         }
+        
         .form-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 320px;
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 16px;
+            width: 360px;
             text-align: center;
             position: relative;
+            border: 1px solid #333;
+            border: 2px solid #0077ff; 
         }
+        
+        .form-container h2 {
+            color: #0077ff;
+            margin-bottom: 20px;
+        }
+        
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background-color: #2a2a2a;
+            color: #f0f0f0;
+            margin-top: 10px;
+        }
+        
+        textarea::placeholder {
+            color: #aaa;
+        }
+        
+        button {
+            background-color: #0077ff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+      
+        
         .preview {
             margin-top: 10px;
             max-width: 100%;
             display: none;
+            border-radius: 10px;
+            border: 1px solid #444;
         }
+        
         .back-button {
             position: absolute;
             left: 20px;
             top: 20px;
             background: none;
             border: none;
-            font-size: 16px;
-            color: #3897f0;
+            font-size: 22px;
+            color: #0077ff;
             cursor: pointer;
+            transition: color 0.2s;
         }
-        .form-content {
-            margin-top: 30px;
+        
+        .back-button:hover {
+            color: #005fcc;
         }
+        
         .error-message {
             color: red;
             margin-top: 20px;
         }
+        
+        #responseMessage {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 400px) {
+            .form-container {
+                width: 90%;
+            }
+        }
+        
+
     </style>
 </head>
 <body>

@@ -6,7 +6,7 @@
     <title>Sign Up Page</title>
     <style>
         body {
-            background-color: #ffffff; /* White Background */
+            background-color: #121212;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
@@ -23,10 +23,6 @@
             width: 100%;
             max-width: 350px;
             text-align: center;
-            transition: transform 0.3s ease-in-out;
-        }
-        .signup-container:hover {
-            transform: scale(1.05);
         }
         .input-group {
             margin-bottom: 15px;
@@ -73,22 +69,6 @@
             font-size: 14px;
             font-weight: bold;
         }
-        /* Profile Image Styles */
-        .profile-image-container {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .profile-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #ccc;
-        }
-        .upload-btn {
-            display: block;
-            margin-top: 10px;
-        }
         @media (max-width: 480px) {
             .signup-container {
                 width: 90%;
@@ -104,13 +84,6 @@
 <body>
     <div class="signup-container">
         <h2>Sign Up</h2>
-
-        <!-- Profile Image Upload -->
-        <div class="profile-image-container">
-            <img src="https://memento-v9jd.onrender.com" id="profile-preview" class="profile-image" alt="Profile Image">
-            <input type="file" id="profile-pic" accept="image/*" class="upload-btn">
-        </div>
-
         <form id="signup-form">
             <div class="input-group">
                 <label for="fullname">Full Name</label>
@@ -134,7 +107,6 @@
             </div>
             <button type="submit" class="signup-btn">Sign Up</button>
         </form>
-
         <div class="message" id="message"></div>
         <div class="forgot-password">
             <p><a href="forgetpass.html">Forgot Password?</a></p>
@@ -145,64 +117,59 @@
     </div>
 
     <script>
-        document.getElementById("profile-pic").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("profile-preview").src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
         document.getElementById("signup-form").addEventListener("submit", async function(event) {
             event.preventDefault();
-
+        
             const fullname = document.getElementById("fullname")?.value.trim();
             const username = document.getElementById("username")?.value.trim();
             const email = document.getElementById("email")?.value.trim();
             const password = document.getElementById("password")?.value;
             const confirmPassword = document.getElementById("confirm-password")?.value;
-            const profilePicInput = document.getElementById("profile-pic");
             const messageDiv = document.getElementById("message");
-
+        
+            // Ensure all elements exist before accessing their value
             if (!fullname || !username || !email || !password || !confirmPassword) {
                 messageDiv.innerHTML = "<span style='color: red;'>Please fill in all fields!</span>";
                 return;
             }
-
-            if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*]/.test(password)) {
-                messageDiv.innerHTML = "<span style='color: red;'>Password must include a number, uppercase letter, and special character!</span>";
-                return;
-            }
-
+        
+            // Password Validation
+            // if (password.length < 8) {
+            //     messageDiv.innerHTML = "<span style='color: red;'>Password must be at least 8 characters!</span>";
+            //     return;
+            // }
+            // if (!/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*]/.test(password)) {
+            //     messageDiv.innerHTML = "<span style='color: red;'>Password must include a number, uppercase letter, and special character!</span>";
+            //     return;
+            // }
+        
+            // Confirm Password Check
             if (password !== confirmPassword) {
                 messageDiv.innerHTML = "<span style='color: red;'>Passwords do not match!</span>";
                 return;
             }
-
-            // Creating FormData object
-            const formData = new FormData();
-            formData.append("fullName", fullname);
-            formData.append("username", username);
-            formData.append("email", email);
-            formData.append("password", password);
-            if (profilePicInput.files.length > 0) {
-                formData.append("image", profilePicInput.files[0]);
-            }
-
+        
+            const userData = {
+                fullName: fullname,
+                username: username,
+                email: email,
+                password: password
+            };
+        
             try {
-                const response = await fetch("https://memento-v9jd.onrender.com/api/v1/auth/signup", {
+                const response = await fetch("https://memento-v9jd.onrender.com/api/v1/auth/signup", { 
                     method: "POST",
-                    body: formData
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(userData)
                 });
-
+        
                 const result = await response.json();
-
+        
                 if (response.ok) {
                     messageDiv.innerHTML = "<span style='color: green;'>Sign-up successful! Redirecting...</span>";
-                    setTimeout(() => window.location.href = "l.html", 2000);
+                    setTimeout(() => {
+                        window.location.href = "l.html";
+                    }, 2000);
                 } else {
                     messageDiv.innerHTML = `<span style='color: red;'>${result.message || "Sign-up failed!"}</span>`;
                 }
@@ -210,6 +177,7 @@
                 messageDiv.innerHTML = "<span style='color: red;'>Error connecting to server!</span>";
             }
         });
+        
     </script>
 </body>
 </html>
